@@ -11,10 +11,10 @@ router.post('/users', async function (req, res) {
     } catch(e) {
         console.log(e); 
         if(e.message == "This email is already in use"){
-            res.status(403).json({Error: "This email is already in use"});
+            return res.status(403).json({Error: "This email is already in use"});
         }
         if(e.message == "This phone is already in use"){
-            res.status(403).json({Error: "This phone is already in use"});
+            return res.status(403).json({Error: "This phone is already in use"});
         }
         res.status(500).json({Error: "Server error"});
     }

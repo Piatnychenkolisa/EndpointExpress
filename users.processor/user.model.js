@@ -46,18 +46,9 @@ exports.create = (user) => {
 
     return newUser
       .save()
-      .then(data => {
-        return(data);
-      })
+      .then(data => data)
       .catch(err => {
         throw err;
       });
 };
-exports.findByProperty = function (property, value) {
-  if (property == "email") {
-    return model.findOne({ email: value }).exec();
-  }
-  if (property == "phone") {
-    return model.findOne({ phone: value }).exec();
-  }
-} 
+exports.findByProperty = (filter) => model.findOne(filter).exec();
