@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    auth_id: {
-        type : String,
-        required : false,
-        unique : true,
-      },
-      first_name: {
+      firstName: {
         type : String,
         required : true
       },
-      last_name: {
+      lastName: {
         type : String,
         required : true
       },
@@ -25,36 +20,44 @@ const userSchema = new mongoose.Schema({
         required : true,
         unique : true
       },
-      is_deleted: {
+      isDeleted: {
         type : Boolean,
         default : false
       },
-      blocked_users: {
+      blockedUsers: {
         type: [String]
       },
-      app_settings: {
+      appSettings: {
         type: String
       }
 })
 
-const model = mongoose.model('User', userSchema);
+const model = mongoose.model('user', userSchema);
+
+
 
 exports.create = (user) => {
-    // Validate request
-    if (!user.last_name || !user.first_name || !user.phone ) {
+  
+    if (!user.lastName || !user.firstName || !user.phone ) {
         throw new Error("Mandatory fields can not be empty!" );
       }
   
-    // Create a User
     const newUser = new model(user);
-    // Save User in the database
+
     return newUser
       .save()
       .then(data => {
-        delete data.auth_id;
         return(data);
       })
       .catch(err => {
         throw err;
       });
-  };
+};
+exports.findByProperty = function (property, value) {
+  if (property == "email") {
+    return model.findOne({ email: value }).exec();
+  }
+  if (property == "phone") {
+    return model.findOne({ phone: value }).exec();
+  }
+} 

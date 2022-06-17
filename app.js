@@ -1,29 +1,21 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const router = require('./routers/User.router');
-
-
-
-const PORT = 3000;
-const DB_URL = 'mongodb+srv://LisaPi:Kuruma26Pein@cluster0.rlbijhy.mongodb.net/?retryWrites=true&w=majority';
+require('dotenv').config();
+const {router} = require('./users.processor/user.controller');
+const Port = process.env.PORT || 3000;
+const url = process.env.DB_URL;
 
 const app = express();
-
 app.use(express.json());
-app.use('/users', router)
-
+app.use( router);
 
 async function start() {
-    try {
-        await mongoose.connect(DB_URL, {
+        await mongoose.connect(url, {
             useNewUrlParser: true
         })
-        app.listen(PORT, () => {
-            console.log('Server has been started on port ' + PORT);
+        app.listen(Port, () => {
+            console.log('Server has been started on port ' + Port);
         })
-    } catch (e) {
-        console.log(e);
-    }
 }
 
 start();
